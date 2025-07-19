@@ -1,0 +1,6 @@
+fastapi
+uvicorn[standard]
+scapy
+mac-vendors
+pysnmp
+sipparty
