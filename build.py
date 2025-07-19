@@ -29,5 +29,7 @@ PyInstaller.__main__.run([
     '--hidden-import=scapy.layers.snmp',
     '--hidden-import=scapy.layers.tftp',
     '--hidden-import=scapy.layers.x509',
+    '--hidden-import=nmap',
+    '--hidden-import=sipparty',
     f'--add-data={nmap_path}{os.pathsep}nmap'
 ])
