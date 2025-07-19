@@ -1,10 +1,12 @@
-﻿# Windows Subsystem for Android™️ Developers
+﻿# Windows Subsystem for Android:tm: Developers
+
+Windows Subsystem for Android™ and the Amazon Appstore will no longer be available in the Microsoft Store after March 5, 2025. [Learn more](https://learn.microsoft.com/en-us/windows/android/wsa/).
 
 Windows Subsystem for Android enables your Windows 11 device to run Android applications that are available in the Amazon Appstore.
 
 ## What is this repository for?
 
-|🐛 [File a developer bug](https://github.com/microsoft/WSA/issues/new?assignees=&labels=triage-needed%2Cbug&template=bug_report.yml) | ⚙️ [Submit a feature request](https://github.com/microsoft/WSA/issues/new?assignees=&labels=triage-needed%2Cfeature-request&template=feature_request.yml) | 📚 [Report a documentation issue](https://github.com/microsoft/WSA/issues/new?assignees=&labels=Issue-Docs%2CTriage-Needed&template=documentation_issue.yml) | 🗣️ [Discuss with the community](https://github.com/microsoft/WSA/discussions)|
+|:bug: [File a developer bug](https://github.com/microsoft/WSA/issues/new?assignees=&labels=triage-needed%2Cbug&template=bug_report.yml) | :gear: [Submit a feature request](https://github.com/microsoft/WSA/issues/new?assignees=&labels=triage-needed%2Cfeature-request&template=feature_request.yml) | :books: [Report a documentation issue](https://github.com/microsoft/WSA/issues/new?assignees=&labels=Issue-Docs%2CTriage-Needed&template=documentation_issue.yml) | :speaking_head: [Discuss with the community](https://github.com/microsoft/WSA/discussions)|
 |:--:|:--:|:--:|:--:|
 |Report **developer** issues with apps and features on Windows Subsystem for Android. | Submit a **developer** feature request for the Windows Subsystem for Android | Report issues with our developer documentation | Discuss Windows Subsystem for Android with other developers
 
@@ -37,11 +39,11 @@ For all general **(non-developer)** subsystem questions, please visit [Microsoft
 
 ## Roadmap
 
-Here's a snippet of what's currently ✅ available or ❌ unavailable and what we have on our radar for the ⏩future:
+Here's a snippet of what's currently :white_check_mark: available or :x: unavailable and what we have on our radar for the :fast_forward:future:
 
 Current Features| Future Roadmap |
 |:--|:--|
-❌ Android Widgets <br> ✅ Certain Audio Codecs <br> ✅ Camera (front + back)	<br> ✅ ClearKey DRM or MPEG-DASH content <br> ✅ CTS/VTS <br> ❌ Direct Bluetooth access (and BLE) <br> ✅ Ethernet <br> ❌ File Backup/restore <br> ❌ File transfer <br> ✅ Freeform window management <br> ✅ Gamepad <br> ❌ Hardware DRM <br> ✅ Location + GPS <br> ✅ Microphone <br> ✅ Multi-monitor/secondary display <br> ❌ Picture-in-picture <br> ✅ Print <br> ❌ Quick tiles <br> ✅ Software DRM (Widevine L3 support) <br> ✅ Touch/Multitouch <br> ❌ USB <br> ✅ Certain Video Decoders and Encoders <br> ✅ WebView <br> ✅ Wi-Fi <br> ✅ Window orientation | ⏩ Android 13 <br> ⏩ File transfer <br> ⏩ Shortcuts <br> ⏩ Picture-in-picture <br> ⏩ Local network access by default
+:x: Android Widgets <br> :white_check_mark: Certain Audio Codecs <br> :white_check_mark: Camera (front + back)	<br> :white_check_mark: ClearKey DRM or MPEG-DASH content <br> :white_check_mark: CTS/VTS <br> :x: Direct Bluetooth access (and BLE) <br> :white_check_mark: Ethernet <br> :x: File Backup/restore <br> :x: File transfer <br> :white_check_mark: Freeform window management <br> :white_check_mark: Gamepad <br> :x: Hardware DRM <br> :white_check_mark: Location + GPS <br> :white_check_mark: Microphone <br> :white_check_mark: Multi-monitor/secondary display <br> :white_check_mark: Picture-in-picture <br> :white_check_mark: Print <br> :x: Quick tiles <br> :white_check_mark: Software DRM (Widevine L3 support) <br> :white_check_mark: Touch/Multitouch <br> :x: USB <br> :white_check_mark: Certain Video Decoders and Encoders <br> :white_check_mark: WebView <br> :white_check_mark: Wi-Fi <br> :white_check_mark: Window orientation <br> :white_check_mark: Android 13 | :fast_forward: File transfer <br> :fast_forward: Shortcuts <br> :fast_forward: Local network access by default
 
 ## Publishing your app for Windows
 
