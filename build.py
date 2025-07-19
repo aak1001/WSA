@@ -1,4 +1,8 @@
 import PyInstaller.__main__
+import nmap
+import os
+
+nmap_path = os.path.dirname(nmap.__file__)
 
 PyInstaller.__main__.run([
     'main.py',
@@ -25,5 +29,5 @@ PyInstaller.__main__.run([
     '--hidden-import=scapy.layers.snmp',
     '--hidden-import=scapy.layers.tftp',
     '--hidden-import=scapy.layers.x509',
-    '--hidden-import=nmap'
+    f'--add-data={nmap_path}{os.pathsep}nmap'
 ])
