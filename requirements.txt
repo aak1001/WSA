@@ -3,3 +3,5 @@ scapy
 mac-vendors
 psutil
 pyinstaller
+python-nmap
+sipparty
