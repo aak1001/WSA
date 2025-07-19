@@ -1,6 +1,5 @@
-fastapi
-uvicorn[standard]
+PyQt6
 scapy
 mac-vendors
-pysnmp
-sipparty
+psutil
+pyinstaller

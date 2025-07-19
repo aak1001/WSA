@@ -1,70 +1,61 @@
 import scapy.all as scapy
-import mac_vendors
 import socket
-from pysnmp.hlapi import *
+import time
+import mac_vendors
 
-class Scanner:
-    def __init__(self, ip_range):
-        self.ip_range = ip_range
-        self.devices = []
+def get_devices(ip_range):
+    arp_request = scapy.ARP(pdst=ip_range)
+    broadcast = scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
+    arp_request_broadcast = broadcast/arp_request
+    answered_list = scapy.srp(arp_request_broadcast, timeout=1, verbose=False)[0]
 
-    def scan(self):
-        arp_request = scapy.ARP(pdst=self.ip_range)
-        broadcast = scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
-        arp_request_broadcast = broadcast/arp_request
-        answered_list = scapy.srp(arp_request_broadcast, timeout=1, verbose=False)[0]
+    devices = []
+    for element in answered_list:
+        hostname = get_hostname(element[1].psrc)
+        ping_time = ping(element[1].psrc)
+        vendor = get_mac_vendor(element[1].hwsrc)
+        device = {
+            "ip": element[1].psrc,
+            "mac": element[1].hwsrc,
+            "hostname": hostname,
+            "ping": ping_time,
+            "vendor": vendor
+        }
+        devices.append(device)
+    return devices
 
-        for element in answered_list:
-            device_info = {
-                "ip": element[1].psrc,
-                "mac": element[1].hwsrc,
-                "vendor": self.get_mac_vendor(element[1].hwsrc),
-                "hostname": self.get_hostname(element[1].psrc)
-            }
-            self.devices.append(device_info)
+def get_hostname(ip):
+    try:
+        return socket.gethostbyaddr(ip)[0]
+    except socket.herror:
+        return "Unknown"
 
-        return self.devices
-
-    def get_hostname(self, ip_address):
-        try:
-            return socket.gethostbyaddr(ip_address)[0]
-        except socket.herror:
-            return "Unknown"
-
-    def get_mac_vendor(self, mac_address):
-        try:
-            return mac_vendors.get_vendor(mac_address)
-        except Exception:
-            return "Unknown"
-
-    def port_scan(self, ip_address, ports):
-        open_ports = []
-        for port in ports:
-            try:
-                sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                sock.settimeout(1)
-                result = sock.connect_ex((ip_address, port))
-                if result == 0:
-                    open_ports.append(port)
-                sock.close()
-            except socket.error:
-                pass
-        return open_ports
-
-    def snmp_scan(self, ip_address, oid):
-        errorIndication, errorStatus, errorIndex, varBinds = next(
-            getCmd(SnmpEngine(),
-                   CommunityData('public', mpModel=0),
-                   UdpTransportTarget((ip_address, 161)),
-                   ContextData(),
-                   ObjectType(ObjectIdentity(oid)))
-        )
-
-        if errorIndication:
-            return str(errorIndication)
-        elif errorStatus:
-            return '%s at %s' % (errorStatus.prettyPrint(),
-                                errorIndex and varBinds[int(errorIndex) - 1][0] or '?')
+def ping(ip):
+    try:
+        packet = scapy.IP(dst=ip)/scapy.ICMP()
+        start_time = time.time()
+        response = scapy.sr1(packet, timeout=1, verbose=False)
+        end_time = time.time()
+        if response:
+            return f"{(end_time - start_time) * 1000:.2f} ms"
         else:
-            for varBind in varBinds:
-                return ' = '.join([x.prettyPrint() for x in varBind])
+            return "Timeout"
+    except Exception:
+        return "Error"
+
+def get_mac_vendor(mac):
+    try:
+        return mac_vendors.get_vendor(mac)
+    except Exception:
+        return "Unknown"
+
+def port_scan(ip, ports):
+    open_ports = []
+    for port in ports:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(0.1)
+        result = sock.connect_ex((ip, port))
+        if result == 0:
+            open_ports.append(port)
+        sock.close()
+    return open_ports
