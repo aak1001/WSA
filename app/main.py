@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QTableWidget, QTableWidgetItem, QTabWidget, QLabel, QPushButton, QLineEdit, QMenu, QDialog, QFormLayout, QDialogButtonBox
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QTableWidget, QTableWidgetItem, QTabWidget, QLabel, QPushButton, QLineEdit, QMenu, QDialog, QFormLayout, QDialogButtonBox, QComboBox
 from PyQt5.QtCore import Qt
 from network_scanner import NetworkScanner
 from database import Database
@@ -29,6 +29,152 @@ class CredentialsDialog(QDialog):
         layout.addWidget(button_box)
         self.setLayout(layout)
 
+class PasswordDialog(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Enter Password")
+
+        self.password_input = QLineEdit()
+        self.password_input.setEchoMode(QLineEdit.Password)
+
+        form_layout = QFormLayout()
+        form_layout.addRow("Password:", self.password_input)
+
+        button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+        button_box.accepted.connect(self.accept)
+        button_box.rejected.connect(self.reject)
+
+        layout = QVBoxLayout()
+        layout.addLayout(form_layout)
+        layout.addWidget(button_box)
+        self.setLayout(layout)
+
+class SettingsDialog(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Settings")
+
+        self.theme_combo = QComboBox()
+        self.theme_combo.addItems(["Light", "Dark"])
+
+        self.set_password_button = QPushButton("Set Password")
+        self.set_password_button.clicked.connect(self.set_password)
+
+        form_layout = QFormLayout()
+        form_layout.addRow("Theme:", self.theme_combo)
+        form_layout.addRow(self.set_password_button)
+
+        button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+        button_box.accepted.connect(self.accept)
+        button_box.rejected.connect(self.reject)
+
+        layout = QVBoxLayout()
+        layout.addLayout(form_layout)
+        layout.addWidget(button_box)
+        self.setLayout(layout)
+
+    def set_password(self):
+        dialog = PasswordDialog(self)
+        if dialog.exec_():
+            password = dialog.password_input.text()
+            self.parent().db.set_password(password)
+
+class ScanProfileEditorDialog(QDialog):
+    def __init__(self, parent=None, profile=None):
+        super().__init__(parent)
+        self.setWindowTitle("Scan Profile")
+
+        self.name_input = QLineEdit()
+        self.network_range_input = QLineEdit()
+        self.ports_input = QLineEdit()
+
+        if profile:
+            self.name_input.setText(profile[0])
+            self.network_range_input.setText(profile[1])
+            self.ports_input.setText(profile[2])
+
+        form_layout = QFormLayout()
+        form_layout.addRow("Name:", self.name_input)
+        form_layout.addRow("Network Range:", self.network_range_input)
+        form_layout.addRow("Ports:", self.ports_input)
+
+        button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+        button_box.accepted.connect(self.accept)
+        button_box.rejected.connect(self.reject)
+
+        layout = QVBoxLayout()
+        layout.addLayout(form_layout)
+        layout.addWidget(button_box)
+        self.setLayout(layout)
+
+class ScanProfilesDialog(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Scan Profiles")
+        self.db = parent.db
+
+        self.profiles_list = QListWidget()
+        self.load_profiles()
+
+        add_button = QPushButton("Add")
+        add_button.clicked.connect(self.add_profile)
+        edit_button = QPushButton("Edit")
+        edit_button.clicked.connect(self.edit_profile)
+        delete_button = QPushButton("Delete")
+        delete_button.clicked.connect(self.delete_profile)
+
+        button_layout = QHBoxLayout()
+        button_layout.addWidget(add_button)
+        button_layout.addWidget(edit_button)
+        button_layout.addWidget(delete_button)
+
+        layout = QVBoxLayout()
+        layout.addWidget(self.profiles_list)
+        layout.addLayout(button_layout)
+        self.setLayout(layout)
+
+    def load_profiles(self):
+        self.profiles_list.clear()
+        profiles = self.db.get_scan_profiles()
+        for profile in profiles:
+            self.profiles_list.addItem(profile[0])
+
+    def add_profile(self):
+        dialog = ScanProfileEditorDialog(self)
+        if dialog.exec_():
+            name = dialog.name_input.text()
+            network_range = dialog.network_range_input.text()
+            ports = dialog.ports_input.text()
+            self.db.add_scan_profile(name, network_range, ports)
+            self.load_profiles()
+
+    def edit_profile(self):
+        selected_item = self.profiles_list.currentItem()
+        if not selected_item:
+            return
+
+        profile_name = selected_item.text()
+        profiles = self.db.get_scan_profiles()
+        profile = next((p for p in profiles if p[0] == profile_name), None)
+
+        if profile:
+            dialog = ScanProfileEditorDialog(self, profile)
+            if dialog.exec_():
+                new_name = dialog.name_input.text()
+                network_range = dialog.network_range_input.text()
+                ports = dialog.ports_input.text()
+                self.db.update_scan_profile(profile_name, new_name, network_range, ports)
+                self.load_profiles()
+
+    def delete_profile(self):
+        selected_item = self.profiles_list.currentItem()
+        if not selected_item:
+            return
+
+        profile_name = selected_item.text()
+        self.db.delete_scan_profile(profile_name)
+        self.load_profiles()
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -54,7 +200,10 @@ class MainWindow(QMainWindow):
         sidebar_layout.addWidget(QLabel("📡 DMR Radios"))
         sidebar_layout.addWidget(QLabel("🖨️ Printers"))
         sidebar_layout.addWidget(QLabel("📊 Logs & History"))
-        sidebar_layout.addWidget(QLabel("⚙️ Settings"))
+
+        self.settings_button = QPushButton("⚙️ Settings")
+        self.settings_button.clicked.connect(self.open_settings)
+        sidebar_layout.addWidget(self.settings_button)
 
         main_layout.addWidget(sidebar)
 
@@ -86,8 +235,17 @@ class MainWindow(QMainWindow):
         self.search_input = QLineEdit()
         self.search_input.setPlaceholderText("Search...")
         self.search_input.textChanged.connect(self.filter_devices)
+        self.profile_combo = QComboBox()
+        self.load_scan_profiles()
+        top_layout.addWidget(self.profile_combo)
+
         top_layout.addWidget(self.network_input)
         top_layout.addWidget(scan_button)
+
+        scan_profiles_button = QPushButton("Scan Profiles")
+        scan_profiles_button.clicked.connect(self.open_scan_profiles)
+        top_layout.addWidget(scan_profiles_button)
+
         top_layout.addWidget(self.search_input)
         layout.addLayout(top_layout)
 
@@ -269,9 +427,82 @@ class MainWindow(QMainWindow):
                     break
             self.device_table.setRowHidden(i, not match)
 
+    def open_settings(self):
+        dialog = SettingsDialog(self)
+        if dialog.exec_():
+            theme = dialog.theme_combo.currentText()
+            self.set_theme(theme)
+
+    def set_theme(self, theme):
+        if theme == "Dark":
+            self.setStyleSheet("""
+                QMainWindow { background-color: #2b2b2b; }
+                QTabWidget::pane { border: 1px solid #444; }
+                QTabBar::tab { background: #3c3c3c; color: white; }
+                QTabBar::tab:selected { background: #555; }
+                QTableWidget { background-color: #3c3c3c; color: white; }
+                QHeaderView::section { background-color: #555; color: white; }
+                QPushButton { background-color: #555; color: white; border: 1px solid #444; }
+                QLineEdit { background-color: #555; color: white; border: 1px solid #444; }
+                QLabel { color: white; }
+            """)
+        else:
+            self.setStyleSheet("")
+
+    def open_scan_profiles(self):
+        dialog = ScanProfilesDialog(self)
+        dialog.exec_()
+        self.load_scan_profiles()
+
+    def load_scan_profiles(self):
+        self.profile_combo.clear()
+        self.profile_combo.addItem("Default")
+        profiles = self.db.get_scan_profiles()
+        for profile in profiles:
+            self.profile_combo.addItem(profile[0])
+
+    def scan_devices(self):
+        profile_name = self.profile_combo.currentText()
+        if profile_name == "Default":
+            network = self.network_input.text()
+            ports = None
+        else:
+            profiles = self.db.get_scan_profiles()
+            profile = next((p for p in profiles if p[0] == profile_name), None)
+            if profile:
+                network = profile[1]
+                ports = profile[2]
+            else: # Should not happen
+                network = self.network_input.text()
+                ports = None
+
+        devices = self.scanner.discover_devices(network)
+        for device in devices:
+            details = self.scanner.get_device_details(device['ip'])
+            device.update(details)
+            self.db.add_or_update_device(device)
+
+        self.load_devices()
+        self.db.log_event("Scan", f"Scanned network {network} with profile {profile_name}")
+        self.load_logs()
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    main_win = MainWindow()
-    main_win.show()
+
+    db = Database()
+    if db.check_password(""): # This is a bit of a hack to check if a password is set
+        main_win = MainWindow()
+        main_win.show()
+    else:
+        dialog = PasswordDialog()
+        if dialog.exec_():
+            if db.check_password(dialog.password_input.text()):
+                main_win = MainWindow()
+                main_win.show()
+            else:
+                sys.exit()
+        else:
+            sys.exit()
+
     sys.exit(app.exec_())

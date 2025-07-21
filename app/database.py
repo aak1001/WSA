@@ -27,6 +27,20 @@ class Database:
             message TEXT
         )
         """)
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS scan_profiles (
+            id INTEGER PRIMARY KEY,
+            name TEXT UNIQUE,
+            network_range TEXT,
+            ports TEXT
+        )
+        """)
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS password (
+            id INTEGER PRIMARY KEY,
+            password_hash TEXT
+        )
+        """)
         self.conn.commit()
 
     def add_or_update_device(self, device_data):
@@ -51,3 +65,42 @@ class Database:
         cursor = self.conn.cursor()
         cursor.execute("SELECT timestamp, event_type, message FROM logs ORDER BY timestamp DESC")
         return cursor.fetchall()
+
+    def add_scan_profile(self, name, network_range, ports):
+        cursor = self.conn.cursor()
+        cursor.execute("INSERT INTO scan_profiles (name, network_range, ports) VALUES (?, ?, ?)", (name, network_range, ports))
+        self.conn.commit()
+
+    def get_scan_profiles(self):
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT name, network_range, ports FROM scan_profiles")
+        return cursor.fetchall()
+
+    def update_scan_profile(self, old_name, new_name, network_range, ports):
+        cursor = self.conn.cursor()
+        cursor.execute("UPDATE scan_profiles SET name = ?, network_range = ?, ports = ? WHERE name = ?", (new_name, network_range, ports, old_name))
+        self.conn.commit()
+
+import hashlib
+
+    def delete_scan_profile(self, name):
+        cursor = self.conn.cursor()
+        cursor.execute("DELETE FROM scan_profiles WHERE name = ?", (name,))
+        self.conn.commit()
+
+    def set_password(self, password):
+        password_hash = hashlib.sha256(password.encode()).hexdigest()
+        cursor = self.conn.cursor()
+        # Clear existing password
+        cursor.execute("DELETE FROM password")
+        cursor.execute("INSERT INTO password (password_hash) VALUES (?)", (password_hash,))
+        self.conn.commit()
+
+    def check_password(self, password):
+        password_hash = hashlib.sha256(password.encode()).hexdigest()
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT password_hash FROM password")
+        result = cursor.fetchone()
+        if result is None:
+            return True # No password set
+        return result[0] == password_hash
