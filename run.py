@@ -30,15 +30,18 @@ async def main():
 if __name__ == "__main__":
     """
     This script is the main entry point that launches the entire application.
+    It uses the older event loop syntax for Python 3.6 compatibility.
     """
     print("Application starting...")
+    loop = asyncio.get_event_loop()
     try:
-        asyncio.run(main())
+        loop.run_until_complete(main())
     except KeyboardInterrupt:
         print("\nApplication terminated by user.")
     except Exception as e:
         # This will catch any unexpected errors during startup or runtime.
         print(f"\nAn unexpected error occurred at the top level: {e}", file=sys.stderr)
         sys.exit(1)
-
-    print("Application finished gracefully.")
+    finally:
+        print("Closing the event loop.")
+        loop.close()
