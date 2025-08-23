@@ -1,0 +1,57 @@
+# Main instance configuration
+instance:
+  language: ar
+  rtl: true
+  db: portable-sqlite
+  data_dir: ./data
+  timezone: Asia/Amman
+  # Polling interval in seconds
+  poll_interval: 5
+
+# Device definitions
+devices:
+  - host: 10.10.10.5 # IP of the target device
+    type: alcatel_oxe
+    snmp:
+      version: v2c
+      community: public # Placeholder, should use v3 in production
+      port: 161
+
+# Device type profiles define what to collect for each type
+profiles:
+  alcatel_oxe:
+    - collector: snmp
+      command: get
+      metrics:
+        - { name: sysUpTime, oid: 1.3.6.1.2.1.1.3.0 }
+        - { name: sysName, oid: 1.3.6.1.2.1.1.5.0 }
+    - collector: snmp
+      name: physical_components # The key under which results will be stored
+      command: walk
+      metrics:
+        # Using ENTITY-MIB to discover hardware components. This is a standard MIB.
+        # The instance ID (e.g., '.1', '.2') will link these metrics together.
+        - { name: componentName, oid: 1.3.6.1.2.1.47.1.1.1.1.7 }
+        - { name: componentClass, oid: 1.3.6.1.2.1.47.1.1.1.1.5 }
+        - { name: componentOpStatus, oid: 1.3.6.1.2.1.47.1.1.1.1.13 }
+
+  # A profile for Nortel would look like this
+  # nortel_cs1000:
+  #   - collector: snmp
+  #     metrics: [...]
+  #   - collector: ssh
+  #     commands: [...]
+
+# Alerting rules definition
+alerts:
+  rules:
+    - name: device_unreachable
+      description: "Triggers when a device is not reachable via SNMP for the first time."
+      # The condition will be evaluated against the device's status data.
+      # 'status' refers to the dictionary of the most recently collected data.
+      condition: "status.snmp_error is not None"
+      # The action to take. For now, just a log action.
+      actions:
+        - type: log
+          # Simple template: {{ host }} will be replaced with the device's host.
+          message: "ALERT [{{ name }}]: Device {{ host }} is UNREACHABLE. Reason: {{ status.snmp_error }}"

@@ -1,0 +1,3 @@
+ip_address,hostname,type
+10.10.10.5,alcatel-oxe-1,alcatel_oxe
+10.10.20.8,nortel-cs1000,nortel_cs1000

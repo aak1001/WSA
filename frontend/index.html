@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Monitoring Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <h1 data-i18n="dashboard_title">Network Monitoring Dashboard</h1>
+        <button id="lang-toggle-btn" data-i18n="toggle_language">Switch to Arabic</button>
+    </header>
+
+    <main>
+        <div id="device-list">
+            <h2 data-i18n="device_status_title">Device Status</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th data-i18n="header_host">Host</th>
+                        <th data-i18n="header_status">Status</th>
+                        <th data-i18n="header_last_seen">Last Seen</th>
+                        <th data-i18n="header_details">Details</th>
+                    </tr>
+                </thead>
+                <tbody id="device-status-body">
+                    <!-- Device data will be injected here by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer>
+        <p>Portable Network Monitor v0.1</p>
+    </footer>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>

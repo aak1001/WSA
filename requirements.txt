@@ -1,0 +1,18 @@
+# Backend & API
+fastapi
+uvicorn[standard]
+
+# Networking & Config
+pysnmp
+netmiko
+pyyaml
+
+# Data Processing & AI
+pandas
+scikit-learn
+
+# Job Scheduling
+apscheduler
+
+# Utilities
+python-dotenv
