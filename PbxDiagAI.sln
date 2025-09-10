@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DD75BBEE-9D19-44F4-BCB1-C192A40A1DA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PbxDiag.Agent", "src\PbxDiag.Agent\PbxDiag.Agent.csproj", "{ABFA2B98-E376-4C9A-9079-00911A94A8F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PbxDiag.Core", "src\PbxDiag.Core\PbxDiag.Core.csproj", "{744E88B4-F9BA-4A0D-B2CB-A17E9F7631CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PbxDiag.Web", "src\PbxDiag.Web\PbxDiag.Web.csproj", "{D85F8531-1C48-46FF-900C-AEB1BF27118F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ABFA2B98-E376-4C9A-9079-00911A94A8F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABFA2B98-E376-4C9A-9079-00911A94A8F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABFA2B98-E376-4C9A-9079-00911A94A8F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABFA2B98-E376-4C9A-9079-00911A94A8F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{744E88B4-F9BA-4A0D-B2CB-A17E9F7631CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{744E88B4-F9BA-4A0D-B2CB-A17E9F7631CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{744E88B4-F9BA-4A0D-B2CB-A17E9F7631CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{744E88B4-F9BA-4A0D-B2CB-A17E9F7631CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D85F8531-1C48-46FF-900C-AEB1BF27118F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D85F8531-1C48-46FF-900C-AEB1BF27118F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D85F8531-1C48-46FF-900C-AEB1BF27118F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D85F8531-1C48-46FF-900C-AEB1BF27118F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{ABFA2B98-E376-4C9A-9079-00911A94A8F6} = {DD75BBEE-9D19-44F4-BCB1-C192A40A1DA7}
+		{744E88B4-F9BA-4A0D-B2CB-A17E9F7631CF} = {DD75BBEE-9D19-44F4-BCB1-C192A40A1DA7}
+		{D85F8531-1C48-46FF-900C-AEB1BF27118F} = {DD75BBEE-9D19-44F4-BCB1-C192A40A1DA7}
+	EndGlobalSection
+EndGlobal
