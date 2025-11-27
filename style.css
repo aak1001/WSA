@@ -1,0 +1,88 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
+/* General Styles */
+body {
+    font-family: 'Cairo', sans-serif;
+    background-color: #1a1a1a;
+    color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header Styles */
+header {
+    background-color: #2c2c2c;
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid #444;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2em;
+}
+
+/* Main Content Styles */
+main {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+#map-container {
+    flex: 1;
+    min-width: 300px;
+    height: 400px;
+    border: 1px solid #444;
+    border-radius: 5px;
+    margin-right: 20px;
+}
+
+#map {
+    height: 100%;
+}
+
+#device-list-container {
+    flex: 1;
+    min-width: 300px;
+    border: 1px solid #444;
+    border-radius: 5px;
+    padding: 20px;
+    margin-right: 20px;
+}
+
+#device-list {
+    list-style: none;
+    padding: 0;
+}
+
+#device-list li {
+    padding: 10px;
+    border-bottom: 1px solid #444;
+}
+
+#network-analysis-container {
+    flex: 1;
+    min-width: 300px;
+    border: 1px solid #444;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+.status.online {
+    color: #28a745;
+}
+
+.status.offline {
+    color: #dc3545;
+}
+
+/* Footer Styles */
+footer {
+    background-color: #2c2c2c;
+    padding: 10px;
+    text-align: center;
+    border-top: 1px solid #444;
+    width: 100%;
+}

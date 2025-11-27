@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>برنامج مراقبة الشبكة</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>برنامج مراقبة الشبكة والأجهزة</h1>
+    </header>
+    <main>
+        <div id="map-container">
+            <div id="map"></div>
+        </div>
+        <div id="device-list-container">
+            <h2>الأجهزة المتصلة</h2>
+            <ul id="device-list">
+                <!-- سيتم إضافة الأجهزة هنا بشكل ديناميكي -->
+            </ul>
+        </div>
+        <div id="network-analysis-container">
+            <h2>تحليل الشبكة</h2>
+            <div id="network-analysis">
+                <!-- سيتم إضافة تحليل الشبكة هنا -->
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>تم التطوير بواسطة Jules</p>
+    </footer>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
