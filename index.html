@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FALCON EYE 2026 - Sovereign Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="mode-peace">
+    <!-- Level 0: The Void (Body Background) -->
+
+    <div class="viewport">
+        <!-- Level 1: Substrate (Hex Grid) -->
+        <div class="substrate-grid"></div>
+
+        <!-- Level 2 & 3: Modules and Acrylics will be inside here -->
+        <div class="ui-layer">
+            <!-- Placeholders for next steps -->
+            <header class="mission-control-module module acrylic">
+                <div class="mission-left">
+                    <div class="status-indicator">
+                        <span class="status-dot"></span>
+                        <span class="status-text">SYSTEM: ONLINE</span>
+                    </div>
+                    <div class="throughput-monitor">
+                        <span class="label">NEURAL SUITE:</span>
+                        <span class="value throughput-value">0.0 TB/s</span>
+                    </div>
+                </div>
+
+                <div class="central-eye-wrapper">
+                    <svg class="falcon-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <filter id="glow">
+                                <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <!-- Abstract Falcon Eye -->
+                        <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="1" fill="none" opacity="0.5" />
+                        <path d="M50 5 L50 15 M50 85 L50 95 M5 50 L15 50 M85 50 L95 50" stroke="currentColor" stroke-width="2" />
+                        <path d="M30 30 L70 30 L60 70 L40 70 Z" fill="none" stroke="currentColor" stroke-width="2" />
+                        <circle cx="50" cy="45" r="5" fill="currentColor" class="eye-pupil" />
+                    </svg>
+                </div>
+
+                <div class="mission-right">
+                    <div class="time-display" id="clock">00:00:00</div>
+                    <div class="security-badge">
+                        <span>ZERO TRUST</span>
+                    </div>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <div class="aicortex-module module acrylic" id="aicortex">
+                    <div class="hologram-container">
+                        <canvas id="topology-graph"></canvas>
+                        <div class="holographic-noise"></div>
+                        <div class="scanline"></div>
+                        <div class="ai-overlay">
+                            <div class="ai-stat">UNCERTAINTY: <span id="uncertainty-score">0.02%</span></div>
+                            <div class="ai-stat">NODES: <span id="node-count">142</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="forensic-module module acrylic">
+                    <div class="forensic-header">FORENSIC BLACKBOX</div>
+                    <div class="forensic-logs" id="log-container">
+                        <!-- Logs injected here -->
+                    </div>
+                </div>
+            </main>
+
+            <nav class="cyberdock-module module acrylic">
+                <div class="dock-container">
+                    <button class="dock-item active" id="btn-peace" data-mode="peace">
+                        <span class="dock-icon">💠</span>
+                        <span class="dock-label">NETWORK</span>
+                    </button>
+                    <button class="dock-item" id="btn-caution" data-mode="caution">
+                        <span class="dock-icon">👁️</span>
+                        <span class="dock-label">SECURITY</span>
+                    </button>
+                    <button class="dock-item" id="btn-war" data-mode="war">
+                        <span class="dock-icon">☢️</span>
+                        <span class="dock-label">OFFENSIVE</span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Perimeter Glow Container -->
+        <div class="contextual-pulse-overlay"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
