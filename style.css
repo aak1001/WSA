@@ -1,0 +1,410 @@
+:root {
+    --color-void: #050608;
+    --color-substrate: #0B0C10;
+    --color-cyan: #00F2FF;
+    --color-coral: #FF4B4B;
+    --color-amber: #FFB800;
+    --font-main: 'Cairo', sans-serif;
+
+    --glow-peace: 0 0 20px rgba(0, 242, 255, 0.3), inset 0 0 10px rgba(0, 242, 255, 0.1);
+    --glow-war: 0 0 40px rgba(255, 75, 75, 0.6), inset 0 0 20px rgba(255, 75, 75, 0.2);
+    --glow-caution: 0 0 30px rgba(255, 184, 0, 0.5), inset 0 0 15px rgba(255, 184, 0, 0.2);
+
+    --easing-organic: cubic-bezier(0.25, 1, 0.5, 1); /* ChromeOS-like easing */
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-main);
+    background-color: var(--color-void);
+    color: white;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Level 0 & Viewport wrapper */
+.viewport {
+    position: relative;
+    width: 95vw;
+    height: 95vh;
+    border-radius: 32px;
+    background-color: var(--color-void);
+    overflow: hidden;
+    transition: box-shadow 0.6s var(--easing-organic), border-color 0.6s var(--easing-organic);
+    z-index: 1;
+    border: 1px solid rgba(255,255,255,0.02);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Level 1: Substrate - Hex Grid */
+.substrate-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.15;
+    /* Hexagon pattern */
+    background-color: transparent;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0 L55.98 15 L55.98 45 L30 60 L4.02 45 L4.02 15 Z' fill='none' stroke='%238899AA' stroke-width='1'/%3E%3C/svg%3E");
+    background-size: 60px 60px;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Level 2: Acrylic Layer & Level 3: Modules */
+.module {
+    background: rgba(11, 12, 16, 0.4); /* Substrate color with transparency */
+    backdrop-filter: blur(60px);
+    -webkit-backdrop-filter: blur(60px);
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+    transition: all 0.4s var(--easing-organic);
+    position: relative;
+    overflow: hidden;
+}
+
+.ui-layer {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    box-sizing: border-box;
+    gap: 24px;
+}
+
+.mission-control-module {
+    height: 80px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    gap: 24px;
+    overflow: hidden;
+}
+
+.aicortex-module {
+    flex: 3;
+    position: relative;
+}
+
+.forensic-module {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.cyberdock-module {
+    height: 80px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* Contextual Pulse */
+.mode-peace .viewport {
+    box-shadow: var(--glow-peace);
+    border-color: rgba(0, 242, 255, 0.3);
+}
+
+.mode-war .viewport {
+    box-shadow: var(--glow-war);
+    border-color: rgba(255, 75, 75, 0.6);
+    animation: pulse-war 0.8s infinite alternate cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+.mode-caution .viewport {
+    box-shadow: var(--glow-caution);
+    border-color: rgba(255, 184, 0, 0.5);
+}
+
+@keyframes pulse-war {
+    from { box-shadow: 0 0 20px rgba(255, 75, 75, 0.4), inset 0 0 10px rgba(255, 75, 75, 0.1); }
+    to { box-shadow: 0 0 50px rgba(255, 75, 75, 0.8), inset 0 0 25px rgba(255, 75, 75, 0.3); }
+}
+
+/* Utility for text */
+h1, h2, h3, p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Mission Control */
+.mission-control-module {
+    justify-content: space-between;
+    padding: 0 40px;
+}
+
+.mission-left, .mission-right {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 200px;
+}
+
+.mission-right {
+    align-items: flex-end;
+    text-align: right;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--color-cyan);
+    box-shadow: 0 0 10px var(--color-cyan);
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.throughput-monitor {
+    font-size: 12px;
+    opacity: 0.7;
+    font-family: monospace;
+}
+
+.central-eye-wrapper {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.falcon-logo {
+    width: 80px;
+    height: 80px;
+    color: var(--color-cyan);
+    transition: color 0.3s ease;
+    filter: url(#glow);
+}
+
+.time-display {
+    font-size: 20px;
+    font-weight: 300;
+    font-variant-numeric: tabular-nums;
+}
+
+.security-badge {
+    font-size: 10px;
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 2px 6px;
+    border-radius: 4px;
+    letter-spacing: 2px;
+}
+
+/* CyberDock */
+.dock-container {
+    display: flex;
+    gap: 20px;
+    height: 100%;
+}
+
+.dock-item {
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.5);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 30px;
+    cursor: pointer;
+    border-radius: 20px;
+    transition: all 0.3s var(--easing-organic);
+    position: relative;
+    overflow: hidden;
+    font-family: var(--font-main);
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.dock-item:hover {
+    background: rgba(255,255,255,0.05);
+    color: white;
+}
+
+.dock-item.active {
+    background: rgba(255,255,255,0.1);
+    color: white;
+    box-shadow: 0 0 15px rgba(255,255,255,0.05);
+}
+
+.dock-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: currentColor;
+    box-shadow: 0 0 10px currentColor;
+}
+
+/* Mode specific colors updates */
+.mode-peace .status-dot { background-color: var(--color-cyan); box-shadow: 0 0 10px var(--color-cyan); }
+.mode-war .status-dot { background-color: var(--color-coral); box-shadow: 0 0 10px var(--color-coral); }
+.mode-caution .status-dot { background-color: var(--color-amber); box-shadow: 0 0 10px var(--color-amber); }
+
+.mode-peace .falcon-logo { color: var(--color-cyan); }
+.mode-war .falcon-logo { color: var(--color-coral); }
+.mode-caution .falcon-logo { color: var(--color-amber); }
+
+.mode-peace .dock-item.active { color: var(--color-cyan); }
+.mode-war .dock-item.active { color: var(--color-coral); }
+.mode-caution .dock-item.active { color: var(--color-amber); }
+
+/* AICortex */
+.aicortex-module {
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+}
+
+.hologram-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+#topology-graph {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.holographic-noise {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.1'/%3E%3C/svg%3E");
+    opacity: 0.15;
+    pointer-events: none;
+    mix-blend-mode: screen;
+}
+
+.scanline {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent 50%, rgba(0, 242, 255, 0.02) 50%);
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.ai-overlay {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    text-align: right;
+    pointer-events: none;
+}
+
+.ai-stat {
+    font-size: 10px;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+    color: rgba(255,255,255,0.6);
+}
+
+.ai-stat span {
+    color: var(--color-cyan);
+    font-weight: 700;
+}
+
+/* Forensic Blackbox */
+.forensic-module {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+}
+
+.forensic-header {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 5px;
+}
+
+.forensic-logs {
+    flex: 1;
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: rgba(0, 242, 255, 0.8);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    scroll-behavior: smooth;
+}
+
+.log-entry {
+    display: flex;
+    gap: 10px;
+    opacity: 0.8;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding-bottom: 2px;
+}
+
+.log-entry:last-child {
+    border-bottom: none;
+}
+
+.log-timestamp {
+    color: rgba(255,255,255,0.4);
+    min-width: 60px;
+}
+
+.log-action {
+    color: var(--color-cyan);
+}
+
+/* Scrollbar styling */
+.forensic-logs::-webkit-scrollbar {
+    width: 4px;
+}
+.forensic-logs::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.2);
+    border-radius: 2px;
+}
+
+/* Mode overrides for logs */
+.mode-war .log-action { color: var(--color-coral); }
+.mode-war .forensic-logs { color: rgba(255, 75, 75, 0.8); }
+
+.mode-caution .log-action { color: var(--color-amber); }
+.mode-caution .forensic-logs { color: rgba(255, 184, 0, 0.8); }
